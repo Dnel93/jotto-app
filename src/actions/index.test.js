@@ -1,5 +1,5 @@
 import moxios from 'moxios';
-import { getSeceretWord } from '.';
+import { getSecretWord } from '.';
 
 describe('getSecretWord', () => {
   beforeEach(() => {
@@ -20,7 +20,7 @@ describe('getSecretWord', () => {
     });
 
     // TODO: Update to test app in Redux / context sections
-    return getSeceretWord().then(secretWord => {
+    return getSecretWord().then(secretWord => {
       expect(secretWord).toBe('party');
     });
   });

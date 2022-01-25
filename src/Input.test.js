@@ -1,6 +1,7 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { findByTestAttr, checkProps } from '../test/testUtils';
+import { mount } from 'enzyme';
+import { Provider } from 'react-redux';
+import { findByTestAttr, checkProps, storeFactory } from '../test/testUtils';
 import Input from './Input';
 
 // mock entire module for destructuring useState on import
@@ -10,18 +11,17 @@ import Input from './Input';
 //   useState: initialState => [initialState, mockSetCurrentGuess],
 // }));
 
-const defaultProps = {
-  secretWord: 'party',
-  success: false,
-};
-
 /**
  * Setup function for app component
  * @returns {ShallowWrapper}
  */
-const setup = (props = {}) => {
-  const setupProps = { ...defaultProps, ...props };
-  return shallow(<Input {...setupProps} />);
+const setup = (initialState = {}, secretWord = 'party') => {
+  const store = storeFactory(initialState);
+  return mount(
+    <Provider store={store}>
+      <Input secretWord={secretWord} />
+    </Provider>
+  );
 };
 
 describe('render', () => {
@@ -86,7 +86,7 @@ describe('state controlled input field', () => {
     mockSetCurrentGuess.mockClear();
     originalUseState = React.useState;
     React.useState = () => ['', mockSetCurrentGuess];
-    wrapper = setup();
+    wrapper = setup({ success: false });
   });
 
   afterEach(() => {
